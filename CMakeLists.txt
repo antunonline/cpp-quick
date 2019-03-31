@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(Template)
 
-set(CMAKE_CXX_STANDARD 17)
-set(BUILD_SHARED_LIBS OFF)
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
-
 
 FUNCTION(PREPEND var prefix)
     SET(listVar "")

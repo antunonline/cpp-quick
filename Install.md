@@ -58,7 +58,6 @@ Shell code:
     sudo apt-get install \
         g++ \
         cmake \
-        libboost-all-dev \
         libevent-dev \
         libdouble-conversion-dev \
         libgoogle-glog-dev \
