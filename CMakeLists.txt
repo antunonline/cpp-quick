@@ -20,7 +20,5 @@ if (EXISTS "/opt/boost" AND IS_DIRECTORY "/opt/boost")
     link_directories(BEFORE "/opt/boost/lib")
 endif ()
 
-
-add_executable(Template main.cpp http/Http.cpp http/Http.h)
-target_link_libraries(Template pthread boost_system)
-set_target_properties(Template PROPERTIES LINK_SEARCH_END_STATIC 1)
+add_subdirectory(http)
+add_subdirectory(util)

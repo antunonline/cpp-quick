@@ -2,7 +2,7 @@
 // Created by ahorvat on 31.03.19..
 //
 
-#include "Http.h"
+#include "../include/HttpServer.h"
 #include <thread>
 
 
@@ -13,8 +13,7 @@ namespace temp {
         namespace http = beast::http;
 
         void
-        fail(beast::error_code ec, char const* what)
-        {
+        fail(beast::error_code ec, char const *what) {
 //            std::cerr << what << ": " << ec.message() << "\n";
         }
 
@@ -83,26 +82,26 @@ namespace temp {
 
         void HttpServer::socket_handler(boost::asio::ip::tcp::socket &socket) &{
             beast::error_code ec;
-            beast::flat_buffer  buffer;
+            beast::flat_buffer buffer;
 
-            for(;;){
+            for (;;) {
                 http::request<http::string_body> req;
                 http::read(socket, buffer, req, ec);
                 auto target = req.target().to_string();
                 auto method = http::to_string(req.method());
                 auto headers = Headers{};
 
-                for(auto & hdr: req) {
+                for (auto &hdr: req) {
                     headers[to_string(hdr.name()).to_string()] = hdr.value().to_string();
                 }
 
-                if(ec == http::error::end_of_stream)
+                if (ec == http::error::end_of_stream)
                     break;
 
-                if(ec)
+                if (ec)
                     fail(ec, "read");
 
-                if(m_handlers.find(target) == m_handlers.end()){
+                if (m_handlers.find(target) == m_handlers.end()) {
 
                 } else {
                     Request request{target, method, headers};
