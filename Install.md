@@ -81,12 +81,24 @@ Shell code:
     git checkout v2019.03.25.00
 
     cat <<EOF > build.patch
+    diff --git a/CMake/FollyCompilerUnix.cmake b/CMake/FollyCompilerUnix.cmake
+    index b12e6d1f..1a97983b 100644
+    --- a/CMake/FollyCompilerUnix.cmake
+    +++ b/CMake/FollyCompilerUnix.cmake
+    @@ -42,7 +42,6 @@ function(apply_folly_compile_options_to_target THETARGET)
+           -Wno-unused
+           -Wunused-label
+           -Wunused-result
+    -      -Wnon-virtual-dtor
+           \${FOLLY_CXX_FLAGS}
+       )
+     endfunction()
     diff --git a/CMake/folly-deps.cmake b/CMake/folly-deps.cmake
     index eda96e90..8cede61a 100644
     --- a/CMake/folly-deps.cmake
     +++ b/CMake/folly-deps.cmake
     @@ -4,7 +4,6 @@ include(CheckFunctionExists)
-
+    
      find_package(Boost 1.51.0 MODULE
        COMPONENTS
     -    context
@@ -96,6 +108,19 @@ Shell code:
     EOF
 
     cat build.patch | patch -p1
-    cmake -DBOOST_ROOT=/opt/boost .
-    make -j7z
+    cmake -DBOOST_ROOT=/opt/boost -DCMAKE_INSTALL_PREFIX=/opt/folly .
+    make -j7
+    make install
 
+
+### GTest
+
+    sudo -i
+    mkdir /opt/gtest
+    chown cpp-dev /opt/gtest
+    su - cpp-dev
+    cd /opt/gtest
+    git clone https://github.com/google/googletest.git .
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/gtest .
+    make -j7
+    make install
