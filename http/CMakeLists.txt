@@ -8,6 +8,6 @@ target_link_libraries(TemplateHttp boost_system glog pthread folly ssl)
 MakeLibStatic(TemplateHttp)
 
 add_executable(TemplateHttpTest test/main.cpp test/TestHttp.cpp)
-target_include_directories(TemplateHttpTest PUBLIC /opt/gtest/include)
+target_include_directories(TemplateHttpTest PUBLIC /opt/gtest/include ${CMAKE_SOURCE_DIR}/http/include)
 target_link_directories(TemplateHttpTest PUBLIC /opt/gtest/lib)
 target_link_libraries(TemplateHttpTest gtest event glog boost_system ssl pthread folly iberty boost_filesystem boost_system boost_program_options crypto boost_regex gflags double-conversion dl TemplateHttp)

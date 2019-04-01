@@ -4,6 +4,8 @@
 
 #include "../include/HttpServer.h"
 #include <thread>
+#include <functional>
+#include <memory>
 
 
 namespace temp {
@@ -11,6 +13,7 @@ namespace temp {
         using std::thread;
         namespace beast = boost::beast;
         namespace http = beast::http;
+        using socket = boost::asio::ip::tcp::socket;
 
         void
         fail(beast::error_code ec, char const *what) {
@@ -67,20 +70,12 @@ namespace temp {
         }
 
         void HttpServer::run() &{
-
-            for (;;) {
-                boost::asio::ip::tcp::socket socket{m_ioContext};
-                m_acceptor.accept(socket);
-
-                thread{[this, sock = std::move(socket)]()  mutable {
-                    socket_handler(sock);
-                }}.detach();
-
-
-            }
+            auto socketPtr = std::make_unique<socket>(m_ioContext);
+            auto accept_handler_proxy = std::bind(&HttpServer::accept_handler, this, std::placeholders::_1, std::placeholders::_2, std::move(socketPtr));
+            m_acceptor.async_accept(*socketPtr.get(), accept_handler_proxy);
         }
 
-        void HttpServer::socket_handler(boost::asio::ip::tcp::socket &socket) &{
+        void HttpServer::socket_handler(socket &socket) &{
             beast::error_code ec;
             beast::flat_buffer buffer;
 
@@ -108,6 +103,10 @@ namespace temp {
                     m_handlers[req.target().to_string()](request);
                 }
             }
+        }
+
+        void HttpServer::accept_handler(boost::system::error_code ec, boost::asio::ip::tcp::socket &sock) &{
+
         }
     }
 }

@@ -75,6 +75,8 @@ namespace temp {
 
             void socket_handler(boost::asio::ip::tcp::socket & socket) & ;
 
+            void accept_handler(boost::system::error_code ec, boost::asio::ip::tcp::socket & sock) &;
+
         public:
             explicit HttpServer(io_context & service);
             bool addhandler(const string & path, const RequestHandler & handler) &;
