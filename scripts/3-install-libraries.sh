@@ -176,7 +176,7 @@ cd pistache
 if ! test -d .git; then git clone https://github.com/oktal/pistache.git .; fi
 if ! test -d build; then mkdir build; fi
 cd build
-if ! test -f installed;
+if ! test -f /opt/cpp/pistache/lib/libpistache.a;
 then
 git submodule update --init
 cmake -DCMAKE_INSTALL_PREFIX=/opt/cpp/pistache -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
@@ -203,7 +203,7 @@ cd /opt/cpp
 if ! test -d restclient-cpp; then mkdir restclient-cpp; fi
 cd restclient-cpp
 if ! test -d .git; then git clone https://github.com/mrtazz/restclient-cpp .; fi
-if ! test -f installed;
+if ! test -f /opt/cpp/restclient-cpp/lib/librestclient-cpp.a;
 then
     ./autogen.sh
     ./configure --prefix=/opt/cpp/restclient-cpp
