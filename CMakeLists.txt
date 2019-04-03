@@ -15,6 +15,3 @@ if (EXISTS "/opt/boost" AND IS_DIRECTORY "/opt/boost")
     include_directories(BEFORE "/opt/boost/include/")
     link_directories(BEFORE "/opt/boost/lib")
 endif ()
-
-add_subdirectory(http)
-add_subdirectory(util)

@@ -1,6 +1,20 @@
 #!/bin/bash
 
-# Run this script as cpp users
+# Run this script as cpp users if installing under Ubuntu.
+# If script is ran under Alpine in container, run as root
+if test -f /etc/alpine-release
+
+then
+    apk add openssl-dev g++ cmake \
+        make \
+        binutils-dev \
+        curl curl-dev \
+        autoconf \
+        openssl-dev \
+        make cmake python-dev wget git automake libtool \
+        libevent-dev \
+        linux-headers
+fi
 
 
 

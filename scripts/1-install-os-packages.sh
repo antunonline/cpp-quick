@@ -40,6 +40,3 @@ then
         libevent-dev \
         linux-headers
 fi
-
-./folly/Subprocess.h:#include
-./folly/test/ThreadLocalTest.cpp:#include
