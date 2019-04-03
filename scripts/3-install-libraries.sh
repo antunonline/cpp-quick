@@ -11,7 +11,7 @@ echo "Installing GTest"
 if ! test -d gtest; then mkdir gtest; fi
 cd gtest
 if ! test -d .git; then git clone https://github.com/google/googletest.git .; fi
-if ! test -f installed;
+if ! test -f /opt/cpp/gtest/lib/libgtest.a;
 then
 cmake -DCMAKE_INSTALL_PREFIX=/opt/cpp/gtest .
 make -j7
@@ -19,10 +19,54 @@ make install
 touch installed
 fi
 
+# Install double-conversion
+cd /opt/cpp
+if ! test -f double-conversion; then mkdir double-conversion;fi
+cd double-conversion
+
+if ! test -d .git;
+then
+    git clone https://github.com/google/double-conversion .
+    git checkout v3.1.4
+fi
+
+if ! test -f /usr/local/lib/libdouble-conversion.a;
+then
+    cmake .
+    make -j7 install
+fi
+
+# Install gflags
 cd /opt/cpp
 
+if ! test -d gflags; then mkdir gflags; fi
+cd gflags
+
+if ! test -d .git; then git clone https://github.com/gflags/gflags.git .; fi
+
+if ! test -f /usr/local/lib/libgflags.a
+then
+    git checkout v2.2.2
+    cmake .
+    make -j7 install
+fi
+
+
+# Install glog
+cd /opt/cpp
+if ! test -d glog; then mkdir glog; fi
+cd glog
+if ! test -d .git; then git clone https://github.com/google/glog.git .; fi
+
+if ! test -f /usr/local/lib64/libglog.a
+then
+    git checkout v0.4.0
+    cmake .
+    make -j7 install
+fi
 
 # Install boost
+cd /opt/cpp
 echo "Installing Boost"
 if ! test -d /opt/cpp/boost; then mkdir boost; fi
 cd boost
@@ -41,7 +85,7 @@ fi
 
 ## Install boost
 cd boost_1_69_0
-    if ! test -f installed; then
+    if ! test -f /opt/cpp/boost/lib/libboost_system.a; then
     ./bootstrap.sh
     ./b2 --prefix=/opt/cpp/boost -j7 || (echo "Failed compiling Boost"; exit 1)
     ./b2 --prefix=/opt/cpp/boost install || (echo "Failed installing Boost"; exit 1)
@@ -82,17 +126,29 @@ index eda96e90..8cede61a 100644
      chrono
      date_time
      filesystem
+diff --git a/folly/Subprocess.h b/folly/Subprocess.h
+index ee98793f..036dd223 100644
+--- a/folly/Subprocess.h
++++ b/folly/Subprocess.h
+@@ -98,7 +98,7 @@
+ #if __APPLE__
+ #include <sys/wait.h>
+ #else
+-#include <wait.h>
++#include <sys/wait.h>
+ #endif
+
+ #include <exception>
 EOF
 
 # Build folly
 if ! test -f patched; then cat build.patch | patch -p1; fi
 touch patched
 
-if ! test -f installed; then
+if ! test -f /opt/cpp/folly/lib/libfolly.a; then
     cmake -DBOOST_ROOT=/opt/cpp/boost -DCMAKE_INSTALL_PREFIX=/opt/cpp/folly .
     make -j7 || (echo "Failed building Folly"; exit 1)
     make install || (echo "Failed installing Folly"; exit 1)
-    touch installed
 fi
 
 

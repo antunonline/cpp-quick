@@ -36,5 +36,10 @@ then
         curl curl-dev \
         autoconf \
         openssl-dev \
-        make cmake python-dev wget git automake libtool
+        make cmake python-dev wget git automake libtool \
+        libevent-dev \
+        linux-headers
 fi
+
+./folly/Subprocess.h:#include
+./folly/test/ThreadLocalTest.cpp:#include
