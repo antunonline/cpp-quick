@@ -6,14 +6,13 @@ include_directories(BEFORE /opt/boost/include /opt/folly/include /opt/cpp/pistac
 link_directories(BEFORE /opt/boost/lib /opt/folly/lib /opt/cpp/pistache/lib)
 
 function(MakeLibStatic NAME)
-    set_target_properties(${NAME} PROPERTIES LINK_SEARCH_END_STATIC 1)
-    set_target_properties(${NAME} PROPERTIES COMPILE_FLAGS "-static-libstdc++ -static")
-    set_target_properties(${NAME} PROPERTIES BUILD_SHARED_LIBS OFF)
+    MESSAGE("MakeLibStatic ${NAME}")
+    target_link_options("${NAME}" PRIVATE -static)
 endfunction(MakeLibStatic)
 
 function(MakeStaticForProduction TARGET)
     if(EXISTS "/etc/alpine-release")
-        MakeLibStatic("${NAME}")
+        MakeLibStatic(${TARGET})
     endif()
 endfunction(MakeStaticForProduction)
 
