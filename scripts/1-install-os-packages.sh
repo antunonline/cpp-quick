@@ -25,4 +25,16 @@ sudo apt-get install \
     pkg-config \
     libcurl4-openssl-dev \
     autogen \
-    dh-autoreconf
+    dh-autoreconf \
+    libssl1.0-dev
+
+if test -f /etc/alpine-release
+then
+    apk add openssl-dev g++ cmake \
+        make \
+        binutils-dev \
+        curl curl-dev \
+        autoconf \
+        openssl-dev \
+        make cmake python-dev wget git automake libtool
+fi

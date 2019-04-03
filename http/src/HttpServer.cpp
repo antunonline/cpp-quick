@@ -70,9 +70,6 @@ namespace temp {
         }
 
         void HttpServer::run() &{
-            auto socketPtr = std::make_unique<socket>(m_ioContext);
-            auto accept_handler_proxy = std::bind(&HttpServer::accept_handler, this, std::placeholders::_1, std::placeholders::_2, std::move(socketPtr));
-            m_acceptor.async_accept(*socketPtr.get(), accept_handler_proxy);
         }
 
         void HttpServer::socket_handler(socket &socket) &{
