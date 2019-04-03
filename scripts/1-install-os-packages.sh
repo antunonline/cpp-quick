@@ -25,8 +25,7 @@ sudo apt-get install \
     pkg-config \
     libcurl4-openssl-dev \
     autogen \
-    dh-autoreconf \
-    libssl1.0-dev
+    dh-autoreconf 
 
 if test -f /etc/alpine-release
 then
